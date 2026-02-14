@@ -15,31 +15,19 @@ export async function POST(request: NextRequest) {
     }
 
     if (!AGENT_ENDPOINT || !DIGITALOCEAN_API_TOKEN) {
-      return NextResponse.json(
-        { error: "Agent endpoint not configured" },
-        { status: 500 }
-      );
+      console.error("Agent endpoint not configured. Using fallback response.");
+      return NextResponse.json(getFallbackResponse(medications), {
+        status: 200,
+      });
     }
 
-    const prompt = `Check for drug interactions between the following medications:
-${medications.map((m: string, i: number) => `${i + 1}. ${m}`).join("\n")}
-
-Use the NIH/FDA drug interaction database to identify potential interactions.
-Return the response as JSON with this exact structure:
-{
-  "interactions": [
-    {
-      "drug1": "medication name",
-      "drug2": "medication name",
-      "severity": "high|moderate|low",
-      "description": "description of the interaction and its clinical significance",
-      "source": "NIH DailyMed / FDA / other source"
-    }
-  ],
-  "summary": "Brief overall summary of the interaction check results"
-}
-
-If no interactions are found, return an empty interactions array with an appropriate summary.`;
+    // Send structured JSON data to the agent
+    const prompt = JSON.stringify({
+      type: "drug_interaction_check",
+      medications: medications,
+      instructions:
+        "Check for drug-drug interactions using the NIH/FDA database. Return severity levels (high/moderate/low) and clinical significance.",
+    });
 
     const response = await fetch(AGENT_ENDPOINT, {
       method: "POST",
@@ -55,10 +43,10 @@ If no interactions are found, return an empty interactions array with an appropr
     });
 
     if (!response.ok) {
-      return NextResponse.json(
-        { error: "Agent request failed" },
-        { status: response.status }
-      );
+      console.error("Agent request failed");
+      return NextResponse.json(getFallbackResponse(medications), {
+        status: 200,
+      });
     }
 
     const agentResponse = await response.json();
@@ -67,21 +55,37 @@ If no interactions are found, return an empty interactions array with an appropr
     try {
       const content = agentResponse.response || agentResponse;
       result = typeof content === "string" ? JSON.parse(content) : content;
-    } catch {
-      result = {
-        interactions: [],
-        summary:
-          agentResponse.response ||
-          "Unable to parse interaction results. Please consult your pharmacist.",
-      };
+
+      // Validate response structure
+      if (!result.interactions || !Array.isArray(result.interactions)) {
+        throw new Error("Invalid response structure");
+      }
+    } catch (parseError) {
+      console.error("Failed to parse agent response:", parseError);
+      return NextResponse.json(getFallbackResponse(medications), {
+        status: 200,
+      });
     }
 
     return NextResponse.json(result);
   } catch (error) {
     console.error("Interactions API error:", error);
     return NextResponse.json(
-      { error: "Internal server error" },
-      { status: 500 }
+      {
+        interactions: [],
+        summary:
+          "An error occurred while checking for interactions. Please consult your pharmacist or healthcare provider.",
+      },
+      { status: 200 }
     );
   }
+}
+
+function getFallbackResponse(medications: string[]) {
+  return {
+    interactions: [],
+    summary: `Unable to check interactions for ${medications.length} medications at this time. Please consult your pharmacist or healthcare provider for a comprehensive interaction review. Always inform your healthcare providers about all medications you're taking, including over-the-counter drugs and supplements.`,
+    disclaimer:
+      "This tool is for informational purposes only and should not replace professional medical advice.",
+  };
 }

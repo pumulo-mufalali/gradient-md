@@ -3,40 +3,49 @@ import { NextRequest, NextResponse } from "next/server";
 const AGENT_ENDPOINT = process.env.AGENT_ENDPOINT;
 const DIGITALOCEAN_API_TOKEN = process.env.DIGITALOCEAN_API_TOKEN;
 
+interface SymptomData {
+  age: string;
+  sex: string;
+  symptoms: string;
+  duration: string;
+  severity: string;
+  medications?: string;
+  conditions?: string;
+  additionalInfo?: string;
+}
+
 export async function POST(request: NextRequest) {
   try {
-    const symptomData = await request.json();
+    const symptomData: SymptomData = await request.json();
 
-    if (!AGENT_ENDPOINT || !DIGITALOCEAN_API_TOKEN) {
+    // Validate required fields
+    if (!symptomData.age || !symptomData.sex || !symptomData.symptoms) {
       return NextResponse.json(
-        { error: "Agent endpoint not configured" },
-        { status: 500 }
+        { error: "Missing required fields: age, sex, and symptoms are required" },
+        { status: 400 }
       );
     }
 
-    const prompt = `Perform a medical triage assessment for the following patient information:
+    if (!AGENT_ENDPOINT || !DIGITALOCEAN_API_TOKEN) {
+      console.error("Agent endpoint not configured. Using fallback response.");
+      return NextResponse.json(getFallbackResponse(), { status: 200 });
+    }
 
-Age: ${symptomData.age}
-Sex: ${symptomData.sex}
-Symptoms: ${symptomData.symptoms}
-Duration: ${symptomData.duration}
-Severity (self-reported): ${symptomData.severity}/10
-Current Medications: ${symptomData.medications || "None"}
-Existing Conditions: ${symptomData.conditions || "None"}
-Additional Info: ${symptomData.additionalInfo || "None"}
-
-Classify the urgency as one of: EMERGENCY, URGENT, ROUTINE, SELF_CARE.
-Provide your assessment with citations from clinical guidelines.
-Return the response as JSON with this exact structure:
-{
-  "severity": "EMERGENCY|URGENT|ROUTINE|SELF_CARE",
-  "title": "Brief condition title",
-  "summary": "1-2 sentence summary",
-  "recommendations": ["recommendation 1", "recommendation 2"],
-  "citations": [{"source": "CDC|WHO|NIH", "document": "document name", "excerpt": "relevant quote", "url": "optional url"}],
-  "nextSteps": ["step 1", "step 2"],
-  "warningSignsToWatch": ["sign 1", "sign 2"]
-}`;
+    // Send structured JSON data to the agent
+    const prompt = JSON.stringify({
+      type: "triage_assessment",
+      patient: {
+        age: symptomData.age,
+        sex: symptomData.sex,
+        symptoms: symptomData.symptoms,
+        duration: symptomData.duration,
+        severity: symptomData.severity,
+        medications: symptomData.medications || "None",
+        conditions: symptomData.conditions || "None",
+        additionalInfo: symptomData.additionalInfo || "None",
+      },
+      instructions: "Perform a medical triage assessment and classify urgency as EMERGENCY, URGENT, ROUTINE, or SELF_CARE. Provide citations from clinical guidelines.",
+    });
 
     const response = await fetch(AGENT_ENDPOINT, {
       method: "POST",
@@ -54,47 +63,58 @@ Return the response as JSON with this exact structure:
     if (!response.ok) {
       const errorText = await response.text();
       console.error("Agent error:", errorText);
-      return NextResponse.json(
-        { error: "Agent request failed" },
-        { status: response.status }
-      );
+      return NextResponse.json(getFallbackResponse(), { status: 200 });
     }
 
     const agentResponse = await response.json();
 
-    // Parse the agent's response - the LangGraph agent returns structured JSON
+    // Parse the agent's response
     let triageResult;
     try {
       const content = agentResponse.response || agentResponse;
-      triageResult =
-        typeof content === "string" ? JSON.parse(content) : content;
-    } catch {
-      // If the agent returns unstructured text, wrap it
-      triageResult = {
-        severity: "ROUTINE",
-        title: "Assessment Complete",
-        summary: agentResponse.response || "Please consult a healthcare provider for a detailed assessment.",
-        recommendations: [
-          "Consider scheduling an appointment with your primary care physician.",
-        ],
-        citations: [],
-        nextSteps: [
-          "Monitor your symptoms",
-          "Seek immediate care if symptoms worsen",
-        ],
-        warningSignsToWatch: [
-          "Sudden worsening of symptoms",
-          "New or unusual symptoms",
-        ],
-      };
+      triageResult = typeof content === "string" ? JSON.parse(content) : content;
+
+      // Validate the response structure
+      if (!triageResult.severity || !triageResult.title) {
+        throw new Error("Invalid response structure");
+      }
+    } catch (parseError) {
+      console.error("Failed to parse agent response:", parseError);
+      return NextResponse.json(getFallbackResponse(), { status: 200 });
     }
 
     return NextResponse.json(triageResult);
   } catch (error) {
     console.error("Triage API error:", error);
-    return NextResponse.json(
-      { error: "Internal server error" },
-      { status: 500 }
-    );
+    return NextResponse.json(getFallbackResponse(), { status: 200 });
   }
+}
+
+function getFallbackResponse() {
+  return {
+    severity: "ROUTINE",
+    title: "Assessment Unavailable",
+    summary:
+      "We're unable to complete a full assessment at this time. If you're experiencing severe symptoms, please seek immediate medical attention.",
+    recommendations: [
+      "Contact your primary care physician for an evaluation",
+      "If symptoms are severe or worsening, call 911 or go to the nearest emergency room",
+      "Monitor your symptoms and seek care if they persist or worsen",
+    ],
+    citations: [],
+    nextSteps: [
+      "Schedule an appointment with your healthcare provider",
+      "Keep track of your symptoms and any changes",
+      "If this is an emergency, call 911 immediately",
+    ],
+    warningSignsToWatch: [
+      "Sudden severe pain",
+      "Difficulty breathing or shortness of breath",
+      "Chest pain or pressure",
+      "Confusion or altered mental status",
+      "Loss of consciousness",
+      "Severe bleeding",
+      "Signs of stroke (facial drooping, arm weakness, speech difficulty)",
+    ],
+  };
 }
