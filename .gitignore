@@ -1,0 +1,44 @@
+# Dependencies
+node_modules/
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+env/
+
+# Environment variables
+.env
+.env.local
+.env.production
+.env.*.local
+
+# Next.js
+frontend/.next/
+frontend/out/
+frontend/build/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Fine-tuning artifacts
+fine-tuning/data/medqa/
+fine-tuning/data/pubmedqa/
+fine-tuning/data/processed/
+fine-tuning/output/
+*.bin
+*.safetensors
+*.gguf
+
+# Gradient ADK
+agent/.gradient/agent.yml
+
+# Logs
+*.log

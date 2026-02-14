@@ -1,0 +1,32 @@
+# DigitalOcean App Platform Specification
+# Deploy with: doctl apps create --spec .do/app.yaml
+
+name: gradientmd
+region: nyc
+
+services:
+  - name: frontend
+    github:
+      repo: your-username/gradientmd
+      branch: main
+      deploy_on_push: true
+    source_dir: frontend
+    build_command: npm install -g pnpm && pnpm install && pnpm build
+    run_command: pnpm start
+    http_port: 3000
+    instance_size_slug: apps-s-1vcpu-1gb
+    instance_count: 1
+    routes:
+      - path: /
+    envs:
+      - key: AGENT_ENDPOINT
+        value: "${AGENT_ENDPOINT}"
+        type: SECRET
+      - key: DIGITALOCEAN_API_TOKEN
+        value: "${DIGITALOCEAN_API_TOKEN}"
+        type: SECRET
+      - key: GRADIENT_MODEL_ACCESS_KEY
+        value: "${GRADIENT_MODEL_ACCESS_KEY}"
+        type: SECRET
+      - key: NODE_ENV
+        value: "production"

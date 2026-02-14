@@ -1,0 +1,44 @@
+# DigitalOcean Functions Project Configuration
+# Deploy with: doctl serverless deploy functions/
+
+packages:
+  - name: gradientmd
+    functions:
+      - name: drug-interaction
+        runtime: nodejs:18
+        web: true
+        limits:
+          timeout: 15000
+          memory: 128
+        parameters:
+          drug1:
+            type: string
+            description: First medication name
+          drug2:
+            type: string
+            description: Second medication name
+
+      - name: facility-lookup
+        runtime: nodejs:18
+        web: true
+        limits:
+          timeout: 15000
+          memory: 128
+        parameters:
+          zip_code:
+            type: string
+            description: US ZIP code
+          limit:
+            type: number
+            description: Maximum number of results
+
+      - name: emergency-numbers
+        runtime: nodejs:18
+        web: true
+        limits:
+          timeout: 5000
+          memory: 128
+        parameters:
+          country_code:
+            type: string
+            description: ISO country code (e.g., US, UK, CA)

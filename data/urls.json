@@ -1,0 +1,43 @@
+{
+  "cdc_knowledge_base": {
+    "name": "CDC Clinical Guidelines",
+    "seed_urls": [
+      "https://www.cdc.gov/clinical-guidance/index.html",
+      "https://www.cdc.gov/emergency/index.html",
+      "https://www.cdc.gov/antibiotic-use/clinicians/index.html"
+    ],
+    "embedding_model": "qwen3-embedding-0.6b",
+    "chunking_strategy": "hierarchical",
+    "chunking_config": {
+      "parent_chunk_size": 750,
+      "child_chunk_size": 400
+    }
+  },
+  "who_knowledge_base": {
+    "name": "WHO Treatment Protocols",
+    "seed_urls": [
+      "https://www.who.int/publications/guidelines",
+      "https://www.who.int/health-topics",
+      "https://www.who.int/teams/mental-health-and-substance-use/treatment-care/mental-health-gap-action-programme"
+    ],
+    "embedding_model": "qwen3-embedding-0.6b",
+    "chunking_strategy": "hierarchical",
+    "chunking_config": {
+      "parent_chunk_size": 750,
+      "child_chunk_size": 400
+    }
+  },
+  "nih_fda_knowledge_base": {
+    "name": "NIH FDA Drug Database",
+    "seed_urls": [
+      "https://dailymed.nlm.nih.gov/dailymed/",
+      "https://medlineplus.gov/druginformation.html",
+      "https://www.fda.gov/drugs/drug-safety-and-availability/medication-guides"
+    ],
+    "embedding_model": "qwen3-embedding-0.6b",
+    "chunking_strategy": "semantic",
+    "chunking_config": {
+      "chunk_size": 512
+    }
+  }
+}

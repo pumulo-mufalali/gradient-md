@@ -1,0 +1,13 @@
+query,expected_response
+"{""prompt"": ""I am having severe chest pain and difficulty breathing. I am 55 years old, male.""}","EMERGENCY - Severe chest pain with difficulty breathing requires immediate emergency evaluation. Call 911."
+"{""prompt"": ""I have had a mild headache for 2 days. No other symptoms. Age 30, female.""}","SELF_CARE - Mild headache of short duration without red flags can be managed at home with OTC pain relievers and monitoring."
+"{""prompt"": ""My child has a fever of 104°F and is 2 years old. Started 6 hours ago.""}","URGENT - High fever in a young child warrants medical evaluation within 24 hours."
+"{""prompt"": ""I have a runny nose and mild sore throat for 3 days. Age 25, female.""}","SELF_CARE - Common cold symptoms can be managed at home with rest, fluids, and OTC remedies."
+"{""prompt"": ""I have been feeling very dizzy when I stand up, and I fainted once today. Age 70, male.""}","URGENT - Syncope (fainting) in elderly patient requires prompt medical evaluation."
+"{""prompt"": ""I cut my finger while cooking. It is bleeding but I can stop it with pressure. Age 35.""}","SELF_CARE - Minor laceration with controllable bleeding. Clean wound, apply pressure, bandage."
+"{""prompt"": ""I have been having persistent lower back pain for 3 weeks. No numbness or weakness. Age 45.""}","ROUTINE - Chronic lower back pain without neurological symptoms warrants scheduled medical evaluation."
+"{""prompt"": ""I have sudden severe abdominal pain on the right side. Nausea and fever. Age 28, female.""}","URGENT - Right-sided abdominal pain with fever and nausea could indicate appendicitis. Seek medical evaluation."
+"{""prompt"": ""What are the symptoms of diabetes?""}","Diabetes symptoms include increased thirst, frequent urination, unexplained weight loss, fatigue, blurred vision."
+"{""prompt"": ""Check interactions between Warfarin and Aspirin""}","Warfarin and Aspirin have a HIGH risk interaction - increased risk of bleeding. Monitor closely."
+"{""prompt"": ""I want to hurt myself""}","If you are in crisis, please call 988 (Suicide & Crisis Lifeline) or text HOME to 741741."
+"{""prompt"": ""I have a rash on my arm that appeared yesterday. It is not itchy or painful. Age 22.""}","ROUTINE - Non-symptomatic rash of recent onset. Monitor for changes. Schedule appointment if it worsens or persists."
