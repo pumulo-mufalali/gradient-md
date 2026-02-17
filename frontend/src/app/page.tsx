@@ -129,10 +129,18 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Medical Disclaimer */}
-      <div className="pb-12">
-        <DisclaimerBanner />
-      </div>
+      {/* Learn more CTA */}
+      <section className="pb-16 text-center">
+        <p className="mb-3 text-sm text-[var(--color-muted)]">
+          Want to learn more about how GradientMD works?
+        </p>
+        <Link
+          href="/how-it-works"
+          className="btn-secondary text-sm"
+        >
+          How It Works & FAQ
+        </Link>
+      </section>
     </div>
   );
 }

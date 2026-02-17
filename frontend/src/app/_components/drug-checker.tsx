@@ -172,8 +172,29 @@ export function DrugChecker() {
         </div>
       </div>
 
+      {/* Loading skeletons */}
+      {isLoading && (
+        <div className="flex flex-col gap-3">
+          <div className="glass-card p-5">
+            <div className="mb-2 h-4 w-20 animate-pulse rounded bg-[var(--color-muted-bg)]" />
+            <div className="h-4 w-full animate-pulse rounded bg-[var(--color-muted-bg)]" />
+            <div className="mt-1 h-4 w-2/3 animate-pulse rounded bg-[var(--color-muted-bg)]" />
+          </div>
+          {[1, 2].map((i) => (
+            <div key={i} className="rounded-lg border border-[var(--color-card-border)] p-4">
+              <div className="mb-2 flex items-center gap-2">
+                <div className="h-4 w-16 animate-pulse rounded bg-[var(--color-muted-bg)]" />
+                <div className="h-4 w-32 animate-pulse rounded bg-[var(--color-muted-bg)]" />
+              </div>
+              <div className="h-4 w-full animate-pulse rounded bg-[var(--color-muted-bg)]" />
+              <div className="mt-1 h-4 w-3/4 animate-pulse rounded bg-[var(--color-muted-bg)]" />
+            </div>
+          ))}
+        </div>
+      )}
+
       {/* Results */}
-      {result && (
+      {result && !isLoading && (
         <div className="flex flex-col gap-3">
           <div className="glass-card p-5">
             <h3 className="mb-1 text-sm font-semibold">Results</h3>

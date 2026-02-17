@@ -3,10 +3,12 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { SymptomForm, type SymptomData } from "../_components/symptom-form";
+import { useToast } from "../_components/toast";
 
 export default function TriagePage() {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const { toast } = useToast();
 
   const handleSubmit = async (data: SymptomData) => {
     setIsLoading(true);
@@ -42,8 +44,9 @@ export default function TriagePage() {
       router.push("/results");
     } catch (error) {
       console.error("Triage failed:", error);
-      alert(
-        "Something went wrong. Please try again. If symptoms are severe, please call 911."
+      toast(
+        "Something went wrong. Please try again. If symptoms are severe, please call 911.",
+        "error"
       );
     } finally {
       setIsLoading(false);

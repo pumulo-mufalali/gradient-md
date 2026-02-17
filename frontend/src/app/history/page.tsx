@@ -20,12 +20,14 @@ const severityBadge: Record<string, string> = {
 
 export default function HistoryPage() {
   const [history, setHistory] = useState<HistoryEntry[]>([]);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     const stored = localStorage.getItem("gradientmd-history");
     if (stored) {
       setHistory(JSON.parse(stored));
     }
+    setIsLoaded(true);
   }, []);
 
   const clearHistory = () => {
@@ -58,7 +60,20 @@ export default function HistoryPage() {
           )}
         </div>
 
-        {history.length === 0 ? (
+        {!isLoaded ? (
+          <div className="flex flex-col gap-2">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="glass-card flex items-center gap-3 p-3.5">
+                <div className="h-5 w-20 animate-pulse rounded-md bg-[var(--color-muted-bg)]" />
+                <div className="min-w-0 flex-1">
+                  <div className="mb-1 h-4 w-40 animate-pulse rounded bg-[var(--color-muted-bg)]" />
+                  <div className="h-3 w-56 animate-pulse rounded bg-[var(--color-muted-bg)]" />
+                </div>
+                <div className="h-3 w-16 animate-pulse rounded bg-[var(--color-muted-bg)]" />
+              </div>
+            ))}
+          </div>
+        ) : history.length === 0 ? (
           <div className="glass-card flex flex-col items-center py-12 text-center">
             <svg
               xmlns="http://www.w3.org/2000/svg"
