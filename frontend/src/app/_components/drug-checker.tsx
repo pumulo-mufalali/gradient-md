@@ -63,24 +63,24 @@ export function DrugChecker() {
   };
 
   const severityColor = {
-    high: "text-red-600 bg-red-500/10 border-red-500/30",
-    moderate: "text-amber-600 bg-amber-500/10 border-amber-500/30",
-    low: "text-green-600 bg-green-500/10 border-green-500/30",
+    high: "text-red-600 bg-red-50 border-red-200",
+    moderate: "text-amber-600 bg-amber-50 border-amber-200",
+    low: "text-green-600 bg-green-50 border-green-200",
   };
 
   return (
-    <div className="mx-auto max-w-3xl space-y-6">
-      <div className="glass-card p-8 md:p-10">
-        <h2 className="mb-2 text-2xl font-bold">Enter Medications</h2>
-        <p className="mb-8 text-sm leading-relaxed text-[var(--color-muted)]">
+    <div className="mx-auto flex max-w-2xl flex-col gap-5">
+      <div className="glass-card p-6">
+        <h2 className="mb-1 text-lg font-semibold">Enter Medications</h2>
+        <p className="mb-5 text-xs leading-relaxed text-[var(--color-muted)]">
           Enter two or more medications to check for potential interactions.
           Data sourced from NIH/FDA databases.
         </p>
 
-        <div className="space-y-4">
+        <div className="flex flex-col gap-3">
           {medications.map((med, i) => (
-            <div key={i} className="flex items-center gap-3">
-              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-secondary)] text-xs font-bold text-white">
+            <div key={i} className="flex items-center gap-2.5">
+              <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-[var(--color-primary)] text-[10px] font-semibold text-white">
                 {i + 1}
               </span>
               <input
@@ -88,26 +88,54 @@ export function DrugChecker() {
                 value={med}
                 onChange={(e) => updateMedication(i, e.target.value)}
                 placeholder={`Medication ${i + 1} (e.g., ${i === 0 ? "Aspirin" : i === 1 ? "Warfarin" : "Ibuprofen"})`}
-                className="flex-1 rounded-lg border border-[var(--color-card-border)] bg-[var(--color-background)] px-4 py-3 text-sm outline-none transition-all focus:border-[var(--color-primary)] focus:ring-2 focus:ring-[var(--color-primary)]/20"
+                className="flex-1 rounded-lg border border-[var(--color-card-border)] bg-[var(--color-background)] px-3.5 py-2 text-sm outline-none transition-colors focus:border-[var(--color-primary)] focus:ring-2 focus:ring-[var(--color-primary)]/20"
               />
               {medications.length > 1 && (
                 <button
                   onClick={() => removeMedication(i)}
-                  className="flex h-12 w-12 items-center justify-center rounded-xl text-[var(--color-muted)] transition-colors hover:bg-red-500/10 hover:text-red-500"
+                  className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md text-[var(--color-muted)] transition-colors hover:bg-red-50 hover:text-red-500"
+                  aria-label={`Remove medication ${i + 1}`}
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <line x1="18" y1="6" x2="6" y2="18" />
+                    <line x1="6" y1="6" x2="18" y2="18" />
+                  </svg>
                 </button>
               )}
             </div>
           ))}
         </div>
 
-        <div className="mt-6 flex items-center gap-4">
+        <div className="mt-5 flex items-center gap-3">
           <button
             onClick={addMedication}
-            className="btn-secondary !px-6 !py-4 text-sm font-medium"
+            className="btn-secondary text-sm"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-2"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="mr-1.5"
+            >
+              <line x1="12" y1="5" x2="12" y2="19" />
+              <line x1="5" y1="12" x2="19" y2="12" />
+            </svg>
             Add Medication
           </button>
           <button
@@ -115,13 +143,25 @@ export function DrugChecker() {
             disabled={
               isLoading || medications.filter((m) => m.trim()).length < 2
             }
-            className="btn-primary !px-10 !py-4 text-base font-bold"
+            className="btn-primary text-sm"
           >
             {isLoading ? (
               <span className="flex items-center gap-2">
-                <svg className="h-5 w-5 animate-spin" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24">
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                    fill="none"
+                  />
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                  />
                 </svg>
                 Checking...
               </span>
@@ -134,9 +174,9 @@ export function DrugChecker() {
 
       {/* Results */}
       {result && (
-        <div className="space-y-4">
-          <div className="glass-card p-6">
-            <h3 className="mb-2 text-lg font-semibold">Results</h3>
+        <div className="flex flex-col gap-3">
+          <div className="glass-card p-5">
+            <h3 className="mb-1 text-sm font-semibold">Results</h3>
             <p className="text-sm text-[var(--color-muted)]">
               {result.summary}
             </p>
@@ -145,11 +185,11 @@ export function DrugChecker() {
           {result.interactions.map((interaction, i) => (
             <div
               key={i}
-              className={`glass-card border ${severityColor[interaction.severity]} p-6`}
+              className={`rounded-lg border p-4 ${severityColor[interaction.severity]}`}
             >
-              <div className="mb-2 flex items-center gap-2">
+              <div className="mb-1.5 flex items-center gap-2">
                 <span
-                  className={`inline-flex rounded-md px-2 py-0.5 text-xs font-semibold uppercase ${severityColor[interaction.severity]}`}
+                  className={`inline-flex rounded-md px-2 py-0.5 text-[10px] font-semibold uppercase ${severityColor[interaction.severity]}`}
                 >
                   {interaction.severity} risk
                 </span>
@@ -158,7 +198,7 @@ export function DrugChecker() {
                 </span>
               </div>
               <p className="text-sm">{interaction.description}</p>
-              <p className="mt-2 text-xs text-[var(--color-muted)]">
+              <p className="mt-1.5 text-xs text-[var(--color-muted)]">
                 Source: {interaction.source}
               </p>
             </div>

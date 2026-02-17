@@ -5,32 +5,29 @@ export default function HomePage() {
   return (
     <div className="container-custom">
       {/* Hero Section */}
-      <section className="page-section flex flex-col items-center text-center">
-        <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-[var(--color-card-border)] bg-[var(--color-muted-bg)] px-5 py-2 text-sm font-medium text-[var(--color-muted)] shadow-sm">
+      <section className="flex flex-col items-center pt-16 pb-20 text-center md:pt-24 md:pb-28">
+        <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-[var(--color-card-border)] bg-[var(--color-muted-bg)] px-4 py-1.5 text-xs font-medium text-[var(--color-muted)]">
           Powered by DigitalOcean Gradient AI
         </div>
 
-        <h1 className="mb-8 max-w-4xl text-5xl font-bold leading-[1.1] tracking-tight md:text-6xl lg:text-7xl">
+        <h1 className="mb-5 max-w-3xl text-4xl font-bold leading-tight tracking-tight text-balance md:text-5xl lg:text-6xl">
           Understand your symptoms.{" "}
           <span className="gradient-text">Get cited guidance.</span>
         </h1>
 
-        <p className="mb-10 max-w-2xl text-lg leading-relaxed text-[var(--color-muted)] md:text-xl">
+        <p className="mb-8 max-w-2xl text-base leading-relaxed text-[var(--color-muted)] md:text-lg">
           GradientMD uses AI to triage your symptoms, assess urgency, and
           provide clinical guidance backed by citations from WHO, CDC, and NIH
           sources — so you know when to seek care.
         </p>
 
-        <div className="flex flex-col gap-6 sm:flex-row">
-          <Link
-            href="/triage"
-            className="btn-primary text-lg"
-          >
+        <div className="flex flex-col gap-3 sm:flex-row">
+          <Link href="/triage" className="btn-primary px-6 py-2.5 text-sm">
             Start Symptom Check
           </Link>
           <Link
             href="/interactions"
-            className="btn-secondary text-lg"
+            className="btn-secondary px-6 py-2.5 text-sm"
           >
             Check Drug Interactions
           </Link>
@@ -41,51 +38,45 @@ export default function HomePage() {
       <div className="section-divider" />
 
       {/* How it works */}
-      <section className="page-section">
-        <div className="mb-16 text-center">
-          <h2 className="mb-4 text-4xl font-bold">How It Works</h2>
-          <p className="text-lg text-[var(--color-muted)]">
+      <section className="py-16 md:py-20">
+        <div className="mb-10 text-center">
+          <h2 className="mb-2 text-2xl font-bold tracking-tight md:text-3xl">
+            How It Works
+          </h2>
+          <p className="text-sm text-[var(--color-muted)] md:text-base">
             Three simple steps to get personalized health guidance
           </p>
         </div>
 
-        <div className="grid gap-8 md:grid-cols-3">
+        <div className="grid gap-6 md:grid-cols-3">
           {[
             {
               step: "1",
               title: "Describe Symptoms",
               description:
                 "Tell us about your symptoms, how long you've had them, and your medical background through a guided form.",
-              icon: null,
             },
             {
               step: "2",
               title: "AI Triage Assessment",
               description:
                 "Our multi-agent AI system analyzes your symptoms against clinical guidelines and classifies urgency.",
-              icon: null,
             },
             {
               step: "3",
               title: "Cited Guidance",
               description:
                 "Receive an urgency assessment with cited recommendations from CDC, WHO, and NIH clinical guidelines.",
-              icon: null,
             },
           ].map((item) => (
-            <div key={item.step} className="feature-card group">
-              {item.icon && (
-                <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-secondary)] text-white shadow-md transition-transform group-hover:scale-110">
-                  {item.icon}
-                </div>
-              )}
-              <div className="mb-3 flex items-center gap-3">
-                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[var(--color-muted-bg)] text-sm font-bold text-[var(--color-primary)]">
+            <div key={item.step} className="feature-card">
+              <div className="mb-3 flex items-center gap-2.5">
+                <span className="flex h-7 w-7 items-center justify-center rounded-md bg-[var(--color-muted-bg)] text-xs font-semibold text-[var(--color-primary)]">
                   {item.step}
                 </span>
-                <h3 className="text-xl font-bold">{item.title}</h3>
+                <h3 className="text-base font-semibold">{item.title}</h3>
               </div>
-              <p className="leading-relaxed text-[var(--color-muted)]">
+              <p className="text-sm leading-relaxed text-[var(--color-muted)]">
                 {item.description}
               </p>
             </div>
@@ -97,48 +88,51 @@ export default function HomePage() {
       <div className="section-divider" />
 
       {/* Trust indicators */}
-      <section className="page-section">
-        <div className="mb-16 text-center">
-          <h2 className="mb-4 text-4xl font-bold">
+      <section className="py-16 md:py-20">
+        <div className="mb-10 text-center">
+          <h2 className="mb-2 text-2xl font-bold tracking-tight md:text-3xl">
             Trusted Sources, Cited Answers
           </h2>
-          <p className="text-lg text-[var(--color-muted)]">
+          <p className="text-sm text-[var(--color-muted)] md:text-base">
             All recommendations are backed by authoritative medical sources
           </p>
         </div>
 
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {[
             {
               name: "CDC",
-              desc: "Centers for Disease Control and Prevention - Evidence-based clinical guidelines, disease surveillance data, and emergency triage protocols used by healthcare providers nationwide.",
+              desc: "Evidence-based clinical guidelines, disease surveillance data, and emergency triage protocols used by healthcare providers.",
             },
             {
               name: "WHO",
-              desc: "World Health Organization - International treatment standards, disease classification systems, and comprehensive fact sheets covering symptoms, transmission, and care recommendations.",
+              desc: "International treatment standards, disease classification systems, and comprehensive fact sheets covering symptoms and care.",
             },
             {
               name: "NIH",
-              desc: "National Institutes of Health - Peer-reviewed drug interaction databases, medication safety information, and clinical research findings from the world's largest medical research agency.",
+              desc: "Peer-reviewed drug interaction databases, medication safety information, and clinical research findings.",
             },
             {
               name: "FDA",
-              desc: "Food and Drug Administration - Official medication labeling, adverse event reporting, drug safety communications, and regulatory guidance on pharmaceutical products.",
+              desc: "Official medication labeling, adverse event reporting, drug safety communications, and regulatory guidance.",
             },
           ].map((source) => (
-            <div
-              key={source.name}
-              className="glass-card group flex flex-col gap-4 p-6 text-center"
-            >
-              <h3 className="text-xl font-bold text-[var(--color-primary)]">{source.name}</h3>
-              <p className="text-sm leading-relaxed text-[var(--color-muted)]">{source.desc}</p>
+            <div key={source.name} className="glass-card p-5">
+              <h3 className="mb-2 text-sm font-bold text-[var(--color-primary)]">
+                {source.name}
+              </h3>
+              <p className="text-xs leading-relaxed text-[var(--color-muted)]">
+                {source.desc}
+              </p>
             </div>
           ))}
         </div>
       </section>
 
       {/* Medical Disclaimer */}
-      <DisclaimerBanner />
+      <div className="pb-12">
+        <DisclaimerBanner />
+      </div>
     </div>
   );
 }

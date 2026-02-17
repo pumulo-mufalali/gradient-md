@@ -13,16 +13,16 @@ interface CitationCardProps {
 
 export function CitationCard({ citation }: CitationCardProps) {
   return (
-    <div className="rounded-lg border border-[var(--color-card-border)] bg-[var(--color-muted-bg)] p-4">
-      <div className="mb-2 flex items-center gap-2">
-        <span className="inline-flex items-center rounded-md bg-[var(--color-primary)]/10 px-2 py-0.5 text-xs font-semibold text-[var(--color-primary)]">
+    <div className="rounded-md border border-[var(--color-card-border)] bg-[var(--color-muted-bg)] p-3.5">
+      <div className="mb-1.5 flex items-center gap-2">
+        <span className="inline-flex items-center rounded-md bg-[var(--color-primary)]/10 px-2 py-0.5 text-[10px] font-semibold text-[var(--color-primary)]">
           {citation.source}
         </span>
         <span className="text-xs text-[var(--color-muted)]">
           {citation.document}
         </span>
       </div>
-      <p className="text-sm italic text-[var(--color-muted)]">
+      <p className="text-sm italic leading-relaxed text-[var(--color-muted)]">
         &ldquo;{citation.excerpt}&rdquo;
       </p>
       {citation.url && (
@@ -30,7 +30,7 @@ export function CitationCard({ citation }: CitationCardProps) {
           href={citation.url}
           target="_blank"
           rel="noopener noreferrer"
-          className="mt-2 inline-flex items-center gap-1 text-xs text-[var(--color-primary)] hover:underline"
+          className="mt-1.5 inline-flex items-center gap-1 text-xs text-[var(--color-primary)] hover:underline"
         >
           View source
           <svg

@@ -65,7 +65,7 @@ export function ChatInterface({ initialContext }: ChatInterfaceProps) {
   };
 
   return (
-    <div className="glass-card flex h-[500px] flex-col overflow-hidden">
+    <div className="glass-card flex h-[420px] flex-col overflow-hidden">
       <div className="border-b border-[var(--color-card-border)] px-4 py-3">
         <h3 className="text-sm font-semibold">Ask a Follow-Up Question</h3>
         <p className="text-xs text-[var(--color-muted)]">
@@ -74,7 +74,7 @@ export function ChatInterface({ initialContext }: ChatInterfaceProps) {
       </div>
 
       {/* Messages area */}
-      <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 space-y-3">
+      <div ref={scrollRef} className="flex flex-1 flex-col gap-2.5 overflow-y-auto p-4">
         {messages.length === 0 && (
           <div className="flex h-full items-center justify-center text-center">
             <div>
@@ -82,7 +82,7 @@ export function ChatInterface({ initialContext }: ChatInterfaceProps) {
                 Ask any follow-up question about your symptoms or triage
                 results.
               </p>
-              <div className="mt-3 flex flex-wrap justify-center gap-2">
+              <div className="mt-3 flex flex-wrap justify-center gap-1.5">
                 {[
                   "What should I watch for?",
                   "When should I go to the ER?",
@@ -91,7 +91,7 @@ export function ChatInterface({ initialContext }: ChatInterfaceProps) {
                   <button
                     key={suggestion}
                     onClick={() => setInput(suggestion)}
-                    className="rounded-full border border-[var(--color-card-border)] px-3 py-1.5 text-xs text-[var(--color-muted)] transition-colors hover:bg-[var(--color-muted-bg)]"
+                    className="rounded-full border border-[var(--color-card-border)] px-3 py-1 text-xs text-[var(--color-muted)] transition-colors hover:bg-[var(--color-muted-bg)]"
                   >
                     {suggestion}
                   </button>
@@ -107,8 +107,9 @@ export function ChatInterface({ initialContext }: ChatInterfaceProps) {
             className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
           >
             <div
-              className={`max-w-[80%] px-4 py-2.5 text-sm ${msg.role === "user" ? "chat-user" : "chat-assistant"
-                }`}
+              className={`max-w-[80%] px-3.5 py-2 text-sm leading-relaxed ${
+                msg.role === "user" ? "chat-user" : "chat-assistant"
+              }`}
             >
               {msg.content}
             </div>
@@ -117,10 +118,10 @@ export function ChatInterface({ initialContext }: ChatInterfaceProps) {
 
         {isLoading && (
           <div className="flex justify-start">
-            <div className="chat-assistant flex items-center gap-1.5 px-4 py-3">
-              <div className="typing-dot h-2 w-2 rounded-full bg-[var(--color-muted)]" />
-              <div className="typing-dot h-2 w-2 rounded-full bg-[var(--color-muted)]" />
-              <div className="typing-dot h-2 w-2 rounded-full bg-[var(--color-muted)]" />
+            <div className="chat-assistant flex items-center gap-1 px-3.5 py-2.5">
+              <div className="typing-dot h-1.5 w-1.5 rounded-full bg-[var(--color-muted)]" />
+              <div className="typing-dot h-1.5 w-1.5 rounded-full bg-[var(--color-muted)]" />
+              <div className="typing-dot h-1.5 w-1.5 rounded-full bg-[var(--color-muted)]" />
             </div>
           </div>
         )}
@@ -136,17 +137,17 @@ export function ChatInterface({ initialContext }: ChatInterfaceProps) {
             onKeyDown={(e) => e.key === "Enter" && sendMessage()}
             placeholder="Ask a follow-up question..."
             disabled={isLoading}
-            className="flex-1 rounded-lg border border-[var(--color-card-border)] bg-[var(--color-background)] px-4 py-2.5 text-sm outline-none focus:border-[var(--color-primary)] focus:ring-2 focus:ring-[var(--color-primary)]/20 disabled:opacity-50"
+            className="flex-1 rounded-lg border border-[var(--color-card-border)] bg-[var(--color-background)] px-3.5 py-2 text-sm outline-none focus:border-[var(--color-primary)] focus:ring-2 focus:ring-[var(--color-primary)]/20 disabled:opacity-50"
           />
           <button
             onClick={sendMessage}
             disabled={isLoading || !input.trim()}
-            className="btn-primary !h-12 !w-12 !p-0 !min-w-0 flex items-center justify-center !rounded-xl"
+            className="btn-primary flex h-9 w-9 shrink-0 items-center justify-center !p-0"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
+              width="16"
+              height="16"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"

@@ -17,48 +17,49 @@ export function SiteNav() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <nav className="sticky top-0 z-50 border-b border-[var(--color-card-border)] bg-[color-mix(in_srgb,var(--color-background)_90%,transparent)] backdrop-blur-xl shadow-sm">
-      <div className="container-custom flex items-center justify-between py-5">
-        <Link href="/" className="group flex items-center gap-3">
-          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-secondary)] text-white text-lg font-bold shadow-md transition-transform group-hover:scale-105">
+    <nav className="sticky top-0 z-50 border-b border-[var(--color-card-border)] bg-[var(--color-background)]/95 backdrop-blur-md">
+      <div className="container-custom flex h-14 items-center justify-between">
+        <Link href="/" className="flex items-center gap-2.5">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--color-primary)] text-sm font-bold text-white">
             G
           </div>
-          <span className="text-2xl font-bold">
+          <span className="text-lg font-semibold tracking-tight">
             Gradient<span className="text-[var(--color-primary)]">MD</span>
           </span>
         </Link>
 
         {/* Desktop nav */}
-        <div className="hidden items-center gap-2 md:flex">
+        <div className="hidden items-center gap-1 md:flex">
           {navLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className={`rounded-xl px-6 py-3.5 text-base font-bold transition-all ${pathname === link.href
-                ? "bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-secondary)] text-white shadow-lg scale-105"
-                : "text-[var(--color-muted)] hover:bg-[var(--color-muted-bg)] hover:text-[var(--color-foreground)]"
-                }`}
+              className={`rounded-md px-3 py-1.5 text-sm font-medium transition-colors ${
+                pathname === link.href
+                  ? "bg-[var(--color-primary)] text-white"
+                  : "text-[var(--color-muted)] hover:bg-[var(--color-muted-bg)] hover:text-[var(--color-foreground)]"
+              }`}
             >
               {link.label}
             </Link>
           ))}
-          <div className="ml-2">
+          <div className="ml-3 border-l border-[var(--color-card-border)] pl-3">
             <ThemeToggle />
           </div>
         </div>
 
         {/* Mobile hamburger */}
-        <div className="flex items-center gap-3 md:hidden">
+        <div className="flex items-center gap-2 md:hidden">
           <ThemeToggle />
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="rounded-lg p-2 text-[var(--color-muted)] hover:bg-[var(--color-muted-bg)] transition-colors"
+            className="rounded-md p-1.5 text-[var(--color-muted)] hover:bg-[var(--color-muted-bg)] transition-colors"
             aria-label="Toggle menu"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
+              width="20"
+              height="20"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -85,17 +86,18 @@ export function SiteNav() {
 
       {/* Mobile menu */}
       {mobileOpen && (
-        <div className="border-t border-[var(--color-card-border)] bg-[var(--color-card)] px-4 py-3 md:hidden shadow-lg">
-          <div className="flex flex-col gap-1">
+        <div className="border-t border-[var(--color-card-border)] bg-[var(--color-card)] p-3 md:hidden">
+          <div className="flex flex-col gap-0.5">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
                 onClick={() => setMobileOpen(false)}
-                className={`block rounded-xl px-6 py-4 text-base font-bold transition-all ${pathname === link.href
-                  ? "bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-secondary)] text-white shadow-md"
-                  : "text-[var(--color-muted)] hover:bg-[var(--color-muted-bg)] hover:text-[var(--color-foreground)]"
-                  }`}
+                className={`rounded-md px-3 py-2 text-sm font-medium transition-colors ${
+                  pathname === link.href
+                    ? "bg-[var(--color-primary)] text-white"
+                    : "text-[var(--color-muted)] hover:bg-[var(--color-muted-bg)] hover:text-[var(--color-foreground)]"
+                }`}
               >
                 {link.label}
               </Link>
